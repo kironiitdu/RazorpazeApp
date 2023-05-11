@@ -1,28 +1,29 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Routing;
 using RazorpazeApp.Pages;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RazorpageApp.Test
 {
-    
-
     [TestClass]
-    public class UnitTest1
+    public class IndexTest
     {
         [TestMethod]
-        public void UnitTestProject()
+        public void GivenPage_WhenLoad_TitleOfPageIsRight()
         {
-
             // Arrange
-            var logger = new LoggerFactory().CreateLogger<TitlePageUnitTestModel>();
-
             var modelMetadataProvider = new EmptyModelMetadataProvider();
+
             //Creating View data instance
             var viewData = new ViewDataDictionary(modelMetadataProvider, new ModelStateDictionary());
-            var pageModel = new TitlePageUnitTestModel(logger)
+            //Binding viewData in page model
+            var indexModel = new IndexModel()
             {
                 PageContext = new PageContext
                 {
@@ -30,16 +31,14 @@ namespace RazorpageApp.Test
                 },
                 MetadataProvider = modelMetadataProvider,
             };
-            
+
 
             // Act
-            pageModel.OnGet();
-            string title = pageModel.Title!;
-           // string title = (string) pageModel.ViewData["Title"];
+            indexModel.OnGet();
+            var result = (string)indexModel.ViewData["Title"]!;
 
             // Assert
-            Assert.IsNotNull(title);
-            Assert.AreEqual("Home page", title);
+            Assert.AreEqual("Page d'accueil", result);
         }
     }
 }
